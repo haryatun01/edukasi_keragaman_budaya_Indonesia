@@ -1,0 +1,945 @@
+!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Budaya Nusantara - Kelas 5 SD</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f9ff;
+        }
+        .bg-pattern {
+            background-color: #f0f9ff;
+            background-image: radial-gradient(#3b82f6 1px, transparent 1px), radial-gradient(#3b82f6 1px, #f0f9ff 1px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            background-opacity: 0.1;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-animation {
+            animation: float 4s ease-in-out infinite;
+        }
+        .card-perspective {
+            perspective: 1000px;
+        }
+    </style>
+</head>
+<body class="bg-pattern min-h-screen text-slate-800">
+
+    <!-- CONTAINER UTAMA -->
+    <div class="max-w-4xl mx-auto px-4 py-6 md:py-10">
+        
+        <!-- HEADER UTAMA -->
+        <header class="text-center mb-8">
+            <div class="inline-block bg-white px-6 py-2 rounded-full shadow-md border-2 border-red-500 mb-4 float-animation">
+                <span class="text-red-600 font-extrabold text-sm md:text-base tracking-widest">🇮🇩 MERDEKA BELAJAR</span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-blue-900 tracking-tight drop-shadow">
+                Petualangan <span class="text-red-600">Budaya Nusantara</span>
+            </h1>
+            <p class="text-slate-600 text-sm md:text-base mt-2 font-medium">Media Pembelajaran Interaktif Keragaman Budaya Kelas 5 SD</p>
+            
+            <!-- Input Nama Siswa -->
+            <div id="name-container" class="mt-4 inline-flex items-center gap-2 bg-white p-2 rounded-lg shadow-sm border border-slate-200">
+                <span class="text-sm font-semibold text-slate-700 pl-2">Nama Petualang:</span>
+                <input type="text" id="student-name" placeholder="Tulis namamu disini..." 
+                       class="px-3 py-1 text-sm bg-slate-50 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-bold text-blue-800"
+                       oninput="saveStudentName()">
+            </div>
+        </header>
+
+        <!-- AREA UTAMA / PANEL KONTROL GAME -->
+        <main class="bg-white rounded-3xl shadow-xl border-4 border-blue-100 p-6 min-h-[500px] flex flex-col justify-between">
+            
+            <!-- ================= MENU UTAMA ================= -->
+            <div id="view-menu" class="space-y-8 py-4">
+                <div class="text-center space-y-2">
+                    <h2 class="text-2xl font-bold text-slate-800">Halo <span id="greeting-name" class="text-blue-600">Siswa Hebat</span>! 👋</h2>
+                    <p class="text-slate-500 max-w-md mx-auto text-sm md:text-base">Pilihlah salah satu misi petualangan di bawah ini untuk memulai belajarmu hari ini!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                    <!-- Kartu Menu 1 -->
+                    <button onclick="switchView('jelajah')" class="group text-left bg-emerald-50 hover:bg-emerald-100 border-b-4 border-emerald-600 hover:border-emerald-700 rounded-2xl p-6 transition-all transform hover:-translate-y-1 shadow-md hover:shadow-lg duration-300">
+                        <div class="bg-emerald-500 text-white w-14 h-14 rounded-xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+                            🗺️
+                        </div>
+                        <h3 class="text-lg font-extrabold text-emerald-900 mb-1">1. Jelajah Budaya</h3>
+                        <p class="text-xs text-emerald-700">Pelajari kebudayaan daerah tiap pulau di Indonesia dengan kartu informasi interaktif.</p>
+                    </button>
+
+                    <!-- Kartu Menu 2 -->
+                    <button onclick="switchView('tebak')" class="group text-left bg-amber-50 hover:bg-amber-100 border-b-4 border-amber-600 hover:border-amber-700 rounded-2xl p-6 transition-all transform hover:-translate-y-1 shadow-md hover:shadow-lg duration-300">
+                        <div class="bg-amber-500 text-white w-14 h-14 rounded-xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+                            🧩
+                        </div>
+                        <h3 class="text-lg font-extrabold text-amber-900 mb-1">2. Tebak Budaya</h3>
+                        <p class="text-xs text-amber-700">Uji ingatanmu dengan memasangkan kebudayaan daerah ke pulau yang tepat!</p>
+                    </button>
+
+                    <!-- Kartu Menu 3 -->
+                    <button onclick="switchView('kuis')" class="group text-left bg-blue-50 hover:bg-blue-100 border-b-4 border-blue-600 hover:border-blue-700 rounded-2xl p-6 transition-all transform hover:-translate-y-1 shadow-md hover:shadow-lg duration-300">
+                        <div class="bg-blue-500 text-white w-14 h-14 rounded-xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform">
+                            🏆
+                        </div>
+                        <h3 class="text-lg font-extrabold text-blue-900 mb-1">3. Kuis Juara</h3>
+                        <p class="text-xs text-blue-700">Mainkan kuis trivia seru, kumpulkan bintang, dan dapatkan sertifikat juaramu!</p>
+                    </button>
+                </div>
+
+                <!-- Bagian Info Guru -->
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 flex items-center gap-4 mt-8">
+                    <span class="text-3xl">👩‍🏫</span>
+                    <div>
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-blue-500">Pesan Ibu Guru (Ibu Haryatun)</h4>
+                        <p class="text-xs text-blue-800 mt-1">"Anak-anak hebat kelas 5, keragaman suku dan budaya di Indonesia adalah kekayaan bangsa kita yang luar biasa. Mari kita lestarikan dengan mengenalnya terlebih dahulu!"</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= MODE 1: JELAJAH BUDAYA ================= -->
+            <div id="view-jelajah" class="hidden space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🗺️</span>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">Misi 1: Jelajah Budaya Indonesia</h2>
+                            <p class="text-xs text-slate-500">Klik nama wilayah di bawah untuk memelajari ragam budayanya.</p>
+                        </div>
+                    </div>
+                    <button onclick="switchView('menu')" class="self-start md:self-auto bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold px-4 py-2 rounded-xl transition-colors">
+                        Kembali ke Menu
+                    </button>
+                </div>
+
+                <!-- Pemilih Pulau -->
+                <div class="flex flex-wrap gap-2" id="island-tabs">
+                    <!-- Dinamis via JS -->
+                </div>
+
+                <!-- Detail Budaya Pulau Terpilih -->
+                <div id="jelajah-content" class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-4 rounded-2xl border border-slate-200 min-h-[350px]">
+                    <!-- Konten dinamis akan masuk di sini -->
+                </div>
+            </div>
+
+            <!-- ================= MODE 2: TEBAK BUDAYA (MATCHING) ================= -->
+            <div id="view-tebak" class="hidden space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🧩</span>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">Misi 2: Tebak & Jodohkan Budaya</h2>
+                            <p class="text-xs text-slate-500">Hubungkan budaya di sebelah kiri dengan nama pulaunya di sebelah kanan!</p>
+                        </div>
+                    </div>
+                    <button onclick="switchView('menu')" class="self-start md:self-auto bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold px-4 py-2 rounded-xl transition-colors">
+                        Kembali ke Menu
+                    </button>
+                </div>
+
+                <!-- Area Game Mencocokkan -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 my-4">
+                    <!-- Sisi Kiri: Kartu Budaya -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Salah Satu Budaya:</h3>
+                        <div id="match-culture-list" class="space-y-2">
+                            <!-- Dinamis via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Sisi Kanan: Target Pulau -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Pilih Pulau Asalnya:</h3>
+                        <div id="match-island-list" class="space-y-2">
+                            <!-- Dinamis via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status & Skor Tebak Budaya -->
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 flex flex-col md:flex-row md:items-center justify-between gap-3 text-center md:text-left">
+                    <div>
+                        <span class="font-bold text-amber-900">Skor Kamu: <span id="tebak-score" class="text-lg">0</span>/5</span>
+                        <p class="text-xs text-amber-700 mt-1" id="tebak-feedback">Hubungkan item di kiri dengan tombol pulau di kanan.</p>
+                    </div>
+                    <button onclick="resetTebakGame()" class="bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors shadow">
+                        Mulai Ulang Game
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= MODE 3: KUIS JUARA ================= -->
+            <div id="view-kuis" class="hidden space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-4">
+                    <div class="flex items-center gap-3">
+                        <span class="text-3xl">🏆</span>
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-800">Misi 3: Kuis Juara Nusantara</h2>
+                            <p class="text-xs text-slate-500">Jawab pertanyaan-pertanyaan berikut dengan teliti!</p>
+                        </div>
+                    </div>
+                    <button onclick="switchView('menu')" class="self-start md:self-auto bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold px-4 py-2 rounded-xl transition-colors">
+                        Kembali ke Menu
+                    </button>
+                </div>
+
+                <!-- Info Pertanyaan -->
+                <div class="flex items-center justify-between text-xs md:text-sm font-bold text-slate-600 bg-slate-100 px-4 py-2 rounded-lg">
+                    <span>Pertanyaan: <span id="kuis-index">1</span> dari <span id="kuis-total">10</span></span>
+                    <span class="text-blue-600">Skor: <span id="kuis-current-score">0</span></span>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-200 rounded-full h-2">
+                    <div id="kuis-progress" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 10%;"></div>
+                </div>
+
+                <!-- Area Pertanyaan -->
+                <div class="space-y-6">
+                    <h3 id="kuis-question" class="text-base md:text-lg font-bold text-slate-800 bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        Memuat pertanyaan...
+                    </h3>
+
+                    <!-- Pilihan Ganda -->
+                    <div id="kuis-options" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Pilihan dinamis -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center pt-4 border-t">
+                    <span class="text-xs text-slate-400">Pilihlah salah satu jawaban di atas.</span>
+                    <button id="next-question-btn" disabled onclick="nextQuestion()" class="bg-blue-300 text-white cursor-not-allowed font-bold px-6 py-2 rounded-xl transition-all">
+                        Lanjut
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= PANEL SERTIFIKAT / HASIL KUIS ================= -->
+            <div id="view-sertifikat" class="hidden space-y-6 text-center py-6">
+                <div class="space-y-2">
+                    <span class="text-6xl">🎉 Selamat! 🎉</span>
+                    <h2 class="text-3xl font-extrabold text-slate-800">Petualanganmu Selesai!</h2>
+                    <p class="text-slate-500 text-sm">Kamu telah membuktikan pengetahuan hebatmu tentang kebudayaan Indonesia.</p>
+                </div>
+
+                <!-- Tampilan Piagam/Sertifikat Digital -->
+                <div class="bg-amber-50 border-8 border-double border-amber-600 p-6 md:p-8 rounded-2xl max-w-xl mx-auto shadow-2xl relative overflow-hidden">
+                    <!-- Bingkai dekoratif di pojok -->
+                    <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-amber-800"></div>
+                    <div class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-amber-800"></div>
+                    <div class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-amber-800"></div>
+                    <div class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-amber-800"></div>
+
+                    <!-- Lambang Garuda Sederhana atau Ornamen -->
+                    <div class="text-center mb-3">
+                        <span class="text-4xl text-amber-700">🎖️</span>
+                    </div>
+
+                    <h3 class="text-2xl font-serif font-extrabold text-amber-900 tracking-wider">PIAGAM PENGHARGAAN</h3>
+                    <p class="text-xs font-serif italic text-amber-700 mt-1">Diberikan sebagai apresiasi kepada:</p>
+                    
+                    <h4 id="cert-student-name" class="text-xl md:text-2xl font-bold text-slate-800 my-4 border-b-2 border-slate-300 pb-2 inline-block px-8">
+                        Petualang Hebat
+                    </h4>
+
+                    <p class="text-sm text-slate-700 leading-relaxed font-sans max-w-sm mx-auto">
+                        Telah berhasil menyelesaikan misi kuis materi <strong class="text-amber-900">"Keragaman Budaya Daerah Indonesia"</strong> Kelas 5 SD dengan hasil yang luar biasa!
+                    </p>
+
+                    <!-- Detil Skor -->
+                    <div class="mt-6 flex justify-around text-center border-t border-amber-200 pt-4">
+                        <div>
+                            <span class="block text-xs text-amber-700 font-bold uppercase">Skor Kuis</span>
+                            <span id="cert-score" class="text-xl font-extrabold text-slate-800">100</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-amber-700 font-bold uppercase">Predikat</span>
+                            <span id="cert-grade" class="text-xl font-extrabold text-emerald-600">Sangat Baik</span>
+                        </div>
+                    </div>
+
+                    <!-- Tanda Tangan Virtual Guru -->
+                    <div class="mt-6 flex justify-end">
+                        <div class="text-center">
+                            <p class="text-[10px] text-slate-500">Semarang, <span id="current-date"></span></p>
+                            <p class="text-xs font-bold text-slate-700 mt-1">Ibu Haryatun, S.Pd.</p>
+                            <span class="text-[9px] text-slate-400 block">Guru Kelas 5 SD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Berbagi / Ulang -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+                    <button onclick="switchView('menu')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md">
+                        Kembali ke Menu Utama
+                    </button>
+                    <button onclick="window.print()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md">
+                        Cetak Piagam (PDF) 🖨️
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-6 text-xs text-slate-400">
+            <p>&copy; 2026 Aplikasi Pembelajaran SD Kelas 5 - Dibuat untuk Ibu Haryatun</p>
+        </footer>
+    </div>
+
+    <!-- SOUND GENERATOR & JAVASCRIPT GAME LOGIC -->
+    <script>
+        // DATA BUDAYA NUSANTARA UNTUK KELAS 5 SD
+        const budayaData = [
+            {
+                id: "sumatera",
+                nama: "Sumatera",
+                emoji: "🐅",
+                color: "emerald",
+                deskripsi: "Pulau Sumatera kaya akan pengaruh budaya Melayu dan Minangkabau yang bernilai seni tinggi.",
+                rumah: "Rumah Gadang (Sumatera Barat) dengan atap runcing menyerupai tanduk kerbau.",
+                pakaian: "Pakaian Adat Bundo Kanduang (hiasan kepala menyerupai atap rumah adat).",
+                tari: "Tari Piring, dibawakan dengan piring di telapak tangan tanpa terjatuh.",
+                senjata: "Senjata Tradisional Keris / Rencong (Aceh)."
+            },
+            {
+                id: "jawa",
+                nama: "Jawa",
+                emoji: "🌋",
+                color: "blue",
+                deskripsi: "Pulau Jawa memiliki keragaman adat Sunda, Jawa, Madura, dan Betawi dengan nilai filosofis mendalam.",
+                rumah: "Rumah Joglo (Jawa Tengah/Jawa Timur) dengan desain kerangka soko guru.",
+                pakaian: "Pakaian Adat Kebaya dan kain batik bercorak indah.",
+                tari: "Tari Serimpi (Yogyakarta) yang ditarikan dengan gerakan sangat anggun.",
+                senjata: "Senjata Tradisional Keris."
+            },
+            {
+                id: "bali-nusa",
+                nama: "Bali & Nusa Tenggara",
+                emoji: "🌴",
+                color: "amber",
+                deskripsi: "Bali dan Nusa Tenggara terkenal di seluruh dunia karena perpaduan unik seni, tradisi, dan alamnya.",
+                rumah: "Rumah Gapura Candi Bentar (Bali) & Rumah Bale (Nusa Tenggara).",
+                pakaian: "Pakaian Payas Agung (Bali) yang penuh perhiasan emas.",
+                tari: "Tari Kecak & Tari Pendet (Bali), Tari Caci (Nusa Tenggara Timur).",
+                senjata: "Senjata Tradisional Keris Bali / Sundu."
+            },
+            {
+                id: "kalimantan",
+                nama: "Kalimantan",
+                emoji: "🐒",
+                color: "orange",
+                deskripsi: "Kalimantan terkenal dengan budaya Dayak dan Banjar yang hidup harmonis berdampingan dengan alam rimba raya.",
+                rumah: "Rumah Lamin / Rumah Betang (rumah panggung panjang yang ditinggali puluhan keluarga).",
+                pakaian: "Pakaian Sapei Sapaq (Kalimantan Timur) dari kulit kayu atau kain berhias manik-manik.",
+                tari: "Tari Mandau (tarian perang gagah perkasa membawa senjata khas Dayak).",
+                senjata: "Senjata Tradisional Mandau."
+            },
+            {
+                id: "sulawesi",
+                nama: "Sulawesi",
+                emoji: "⛵",
+                color: "violet",
+                deskripsi: "Sulawesi kaya akan kebudayaan suku Bugis, Makassar, Toraja, dan Minahasa dengan nilai kearifan lokal luar biasa.",
+                rumah: "Rumah Tongkonan (Suku Toraja) dengan atap megah melengkung seperti perahu.",
+                pakaian: "Baju Bodo (Suku Bugis-Makassar), salah satu pakaian adat tertua di dunia.",
+                tari: "Tari Kipas Pakarena, melambangkan kelembutan dan kesabaran perempuan.",
+                senjata: "Senjata Tradisional Badik."
+            },
+            {
+                id: "papua-maluku",
+                nama: "Maluku & Papua",
+                emoji: "🦜",
+                color: "red",
+                deskripsi: "Maluku dan Papua terkenal akan musik yang merdu, ikatan kekeluargaan yang kuat, dan kekayaan alam timur.",
+                rumah: "Rumah Honai (Papua) berbentuk bulat beratapkan jerami untuk menghangatkan diri.",
+                pakaian: "Pakaian Adat Sali / Koteka (Papua) & Baju Cele (Maluku).",
+                tari: "Tari Selamat Datang (menyambut tamu dengan sukacita) & Tari Cakalele (tari perang).",
+                senjata: "Senjata Tradisional Busur dan Panah / Parang Salawaku."
+            }
+        ];
+
+        // DATA KUIS UNTUK KUIS JUARA (10 Pertanyaan)
+        const kuisQuestions = [
+            {
+                q: "Rumah adat Honai yang berbentuk bulat dan beratap jerami adalah rumah adat dari daerah mana?",
+                options: ["Sumatera", "Sulawesi", "Papua", "Jawa"],
+                answer: 2
+            },
+            {
+                q: "Tari daerah yang ditarikan dengan piring di atas telapak tangan secara lincah adalah...",
+                options: ["Tari Saman", "Tari Piring", "Tari Kecak", "Tari Pendet"],
+                answer: 1
+            },
+            {
+                q: "Nama pakaian adat khas perempuan Suku Bugis-Makassar yang legendaris adalah...",
+                options: ["Kebaya", "Baju Cele", "Baju Bodo", "Payas Agung"],
+                answer: 2
+            },
+            {
+                q: "Rumah adat Tongkonan yang memiliki atap melengkung menyerupai perahu berasal dari suku...",
+                options: ["Suku Toraja", "Suku Dayak", "Suku Minangkabau", "Suku Betawi"],
+                answer: 0
+            },
+            {
+                q: "Mandau merupakan senjata tradisional yang sangat erat kaitannya dengan kehidupan suku...",
+                options: ["Suku Sunda", "Suku Dayak", "Suku Bali", "Suku Asmat"],
+                answer: 1
+            },
+            {
+                q: "Atap runcing menyerupai tanduk kerbau adalah ciri khas dari rumah adat...",
+                options: ["Rumah Joglo", "Rumah Lamin", "Rumah Gadang", "Rumah Honai"],
+                answer: 2
+            },
+            {
+                q: "Tari Kecak dan Tari Pendet merupakan seni pertunjukan tari yang berasal dari provinsi...",
+                options: ["Jawa Tengah", "Kalimantan Barat", "Nusa Tenggara Barat", "Bali"],
+                answer: 3
+            },
+            {
+                q: "Rumah panggung panjang yang ditinggali oleh banyak keluarga Suku Dayak di Kalimantan disebut...",
+                options: ["Rumah Betang / Lamin", "Rumah Joglo", "Rumah Gapura", "Rumah Tongkonan"],
+                answer: 0
+            },
+            {
+                q: "Mengapa kita harus melestarikan dan menghormati keragaman budaya di Indonesia?",
+                options: [
+                    "Agar budaya kita direbut bangsa lain",
+                    "Supaya persatuan dan kesatuan bangsa tetap terjaga",
+                    "Biar kita bisa pamer kepada orang luar",
+                    "Supaya budaya asing bisa masuk lebih mudah"
+                ],
+                answer: 1
+            },
+            {
+                q: "Berikut ini sikap yang menunjukan apresiasi terhadap keragaman budaya adalah...",
+                options: [
+                    "Hanya menyukai lagu modern barat",
+                    "Mengejek tarian daerah lain yang terlihat aneh",
+                    "Mempelajari dan menonton festival budaya nusantara",
+                    "Melarang pertunjukan seni tradisi daerah"
+                ],
+                answer: 2
+            }
+        ];
+
+        // STATE APLIKASI
+        let currentView = "menu";
+        let activeIslandIndex = 0;
+        let studentName = "Petualang Hebat";
+
+        // State Tebak Budaya
+        let selectedTebakCultureId = null;
+        let matchedPairs = 0;
+        let tebakAttempts = 0;
+        let activeTebakItems = [];
+
+        // State Kuis
+        let currentKuisIndex = 0;
+        let kuisScore = 0;
+        let currentSelectedAnswer = null;
+
+        // --- SISTEM SUARA (WEB AUDIO API) ---
+        function playTone(freq, type, duration) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = type;
+                oscillator.frequency.value = freq;
+                
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                // Browser tidak mendukung audio kontekstual tanpa interaksi awal
+            }
+        }
+
+        function playSoundCorrect() {
+            playTone(523.25, 'sine', 0.15); // C5
+            setTimeout(() => playTone(659.25, 'sine', 0.15), 100); // E5
+            setTimeout(() => playTone(783.99, 'sine', 0.3), 200); // G5
+        }
+
+        function playSoundWrong() {
+            playTone(196.00, 'triangle', 0.3); // G3
+            setTimeout(() => playTone(130.81, 'triangle', 0.4), 150); // C3
+        }
+
+        function playSoundClick() {
+            playTone(440, 'sine', 0.05); // A4 pendek
+        }
+
+        // --- MANAJEMEN TAMPILAN (NAVIGATION) ---
+        function switchView(viewName) {
+            playSoundClick();
+            
+            // Sembunyikan semua section
+            document.getElementById('view-menu').classList.add('hidden');
+            document.getElementById('view-jelajah').classList.add('hidden');
+            document.getElementById('view-tebak').classList.add('hidden');
+            document.getElementById('view-kuis').classList.add('hidden');
+            document.getElementById('view-sertifikat').classList.add('hidden');
+
+            // Tampilkan section terpilih
+            document.getElementById(`view-${viewName}`).classList.remove('hidden');
+            currentView = viewName;
+
+            // Inisialisasi sesuai view
+            if (viewName === 'menu') {
+                updateGreeting();
+            } else if (viewName === 'jelajah') {
+                initJelajah();
+            } else if (viewName === 'tebak') {
+                initTebakGame();
+            } else if (viewName === 'kuis') {
+                initKuis();
+            }
+        }
+
+        // --- FUNGSI NAMA SISWA ---
+        function saveStudentName() {
+            const input = document.getElementById('student-name').value.trim();
+            studentName = input !== "" ? input : "Petualang Hebat";
+            document.getElementById('greeting-name').innerText = studentName;
+            document.getElementById('cert-student-name').innerText = studentName;
+        }
+
+        function updateGreeting() {
+            document.getElementById('greeting-name').innerText = studentName;
+        }
+
+        // --- FITUR 1: JELAJAH BUDAYA ---
+        function initJelajah() {
+            const tabsContainer = document.getElementById('island-tabs');
+            tabsContainer.innerHTML = '';
+
+            budayaData.forEach((island, index) => {
+                const btn = document.createElement('button');
+                btn.className = `flex items-center gap-1 px-4 py-2 rounded-xl text-sm font-bold border-2 transition-all ${
+                    index === activeIslandIndex 
+                    ? `bg-blue-600 text-white border-blue-600 shadow-md scale-105` 
+                    : `bg-white hover:bg-slate-100 text-slate-700 border-slate-200`
+                }`;
+                btn.innerHTML = `${island.emoji} ${island.nama}`;
+                btn.onclick = () => {
+                    activeIslandIndex = index;
+                    playSoundClick();
+                    initJelajah(); // Render ulang tab
+                    renderJelajahContent();
+                };
+                tabsContainer.appendChild(btn);
+            });
+
+            renderJelajahContent();
+        }
+
+        function renderJelajahContent() {
+            const island = budayaData[activeIslandIndex];
+            const contentContainer = document.getElementById('jelajah-content');
+            
+            contentContainer.innerHTML = `
+                <!-- Sisi Kiri: Deskripsi Umum -->
+                <div class="space-y-4 flex flex-col justify-between p-2">
+                    <div class="space-y-2">
+                        <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Wilayah Indonesia</span>
+                        <h3 class="text-3xl font-extrabold text-slate-800 flex items-center gap-2">
+                            <span>${island.emoji}</span> ${island.nama}
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed">${island.deskripsi}</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        <h4 class="text-xs font-bold text-blue-800 uppercase mb-1">💡 Tahukah Kamu?</h4>
+                        <p class="text-xs text-blue-700">Setiap suku bangsa di wilayah ini memiliki cara tersendiri dalam beradaptasi dengan lingkungan sekitar, tercermin dari arsitektur rumah dan gaya hidup mereka!</p>
+                    </div>
+                </div>
+
+                <!-- Sisi Kanan: Detail Budaya (Kamus Mini) -->
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Unsur Budaya Daerah</h4>
+                    
+                    <!-- Rumah Adat -->
+                    <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-sm hover:shadow transition-shadow">
+                        <span class="text-2xl">🏠</span>
+                        <div>
+                            <h5 class="text-xs font-extrabold text-slate-500 uppercase">Rumah Adat</h5>
+                            <p class="text-xs font-bold text-slate-800 mt-0.5">${island.rumah}</p>
+                        </div>
+                    </div>
+
+                    <!-- Pakaian Adat -->
+                    <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-sm hover:shadow transition-shadow">
+                        <span class="text-2xl">👕</span>
+                        <div>
+                            <h5 class="text-xs font-extrabold text-slate-500 uppercase">Pakaian Adat</h5>
+                            <p class="text-xs font-bold text-slate-800 mt-0.5">${island.pakaian}</p>
+                        </div>
+                    </div>
+
+                    <!-- Seni Tari -->
+                    <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-sm hover:shadow transition-shadow">
+                        <span class="text-2xl">💃</span>
+                        <div>
+                            <h5 class="text-xs font-extrabold text-slate-500 uppercase">Tari Daerah</h5>
+                            <p class="text-xs font-bold text-slate-800 mt-0.5">${island.tari}</p>
+                        </div>
+                    </div>
+
+                    <!-- Senjata Tradisional -->
+                    <div class="flex items-start gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-sm hover:shadow transition-shadow">
+                        <span class="text-2xl">🗡️</span>
+                        <div>
+                            <h5 class="text-xs font-extrabold text-slate-500 uppercase">Senjata Khas</h5>
+                            <p class="text-xs font-bold text-slate-800 mt-0.5">${island.senjata}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- FITUR 2: TEBAK BUDAYA (GAME MENCOCOKKAN) ---
+        function initTebakGame() {
+            // Ambil 5 pasang item acak dari data kebudayaan
+            const shuffledIslands = [...budayaData].sort(() => 0.5 - Math.random());
+            activeTebakItems = shuffledIslands.slice(0, 5).map(island => {
+                // Pilih secara acak satu unsur budaya untuk dicocokkan
+                const types = ["rumah", "tari", "pakaian"];
+                const selectedType = types[Math.floor(Math.random() * types.length)];
+                let itemText = "";
+                let itemPrefix = "";
+
+                if (selectedType === "rumah") {
+                    itemText = island.rumah.split(" (")[0]; // Sederhanakan nama rumah
+                    itemPrefix = "🏠 Rumah Adat: ";
+                } else if (selectedType === "tari") {
+                    itemText = island.tari.split(" (")[0].split(",")[0]; // Sederhanakan nama tari
+                    itemPrefix = "💃 Tari: ";
+                } else {
+                    itemText = island.pakaian.split(" (")[0];
+                    itemPrefix = "👕 Pakaian: ";
+                }
+
+                return {
+                    islandId: island.id,
+                    islandName: island.nama,
+                    islandEmoji: island.emoji,
+                    displayText: `${itemPrefix} ${itemText}`,
+                    matched: false
+                };
+            });
+
+            matchedPairs = 0;
+            tebakAttempts = 0;
+            selectedTebakCultureId = null;
+
+            document.getElementById('tebak-score').innerText = '0';
+            document.getElementById('tebak-feedback').innerText = "Silakan klik kartu kebudayaan di kolom kiri terlebih dahulu!";
+            document.getElementById('tebak-feedback').className = "text-xs text-amber-700 mt-1";
+
+            renderTebakLists();
+        }
+
+        function renderTebakLists() {
+            const cultureListContainer = document.getElementById('match-culture-list');
+            const islandListContainer = document.getElementById('match-island-list');
+
+            cultureListContainer.innerHTML = '';
+            islandListContainer.innerHTML = '';
+
+            // Render Kartu Kebudayaan Kiri (diacak urutannya)
+            activeTebakItems.forEach((item, index) => {
+                const btn = document.createElement('button');
+                btn.disabled = item.matched;
+                
+                let baseClass = "w-full text-left p-3 rounded-xl border-2 text-xs md:text-sm font-semibold transition-all ";
+                if (item.matched) {
+                    baseClass += "bg-emerald-100 text-emerald-800 border-emerald-300 opacity-60 cursor-not-allowed";
+                } else if (selectedTebakCultureId === index) {
+                    baseClass += "bg-blue-600 text-white border-blue-700 scale-102 shadow";
+                } else {
+                    baseClass += "bg-white hover:bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300";
+                }
+
+                btn.className = baseClass;
+                btn.innerHTML = `${item.displayText} ${item.matched ? '✔️' : ''}`;
+                btn.onclick = () => selectTebakCulture(index);
+                cultureListContainer.appendChild(btn);
+            });
+
+            // Render Tombol Pulau Kanan (diurutkan berdasar list pulau agar konsisten tetapi acak dari item aslinya)
+            const rightIslands = activeTebakItems.map(item => ({id: item.islandId, name: item.islandName, emoji: item.islandEmoji}));
+            // Acak urutan kanan agar tidak sejajar dengan kiri
+            const shuffledRightIslands = rightIslands.sort((a,b) => a.name.localeCompare(b.name));
+
+            shuffledRightIslands.forEach((island) => {
+                // Periksa apakah pulau ini sudah berhasil dicocokkan seluruhnya
+                const isMatched = activeTebakItems.find(item => item.islandId === island.id)?.matched || false;
+
+                const btn = document.createElement('button');
+                btn.disabled = isMatched || selectedTebakCultureId === null;
+                
+                let baseClass = "w-full flex items-center justify-between p-3 rounded-xl border-2 text-xs md:text-sm font-bold transition-all ";
+                if (isMatched) {
+                    baseClass += "bg-emerald-100 text-emerald-800 border-emerald-300 opacity-60 cursor-not-allowed";
+                } else if (selectedTebakCultureId === null) {
+                    baseClass += "bg-slate-50 text-slate-400 border-slate-100 cursor-not-allowed";
+                } else {
+                    baseClass += "bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-200 hover:border-amber-300 cursor-pointer";
+                }
+
+                btn.className = baseClass;
+                btn.innerHTML = `<span>${island.emoji} Pulau ${island.name}</span> <span>🎯</span>`;
+                btn.onclick = () => submitTebakMatch(island.id);
+                islandListContainer.appendChild(btn);
+            });
+        }
+
+        function selectTebakCulture(index) {
+            playSoundClick();
+            selectedTebakCultureId = index;
+            document.getElementById('tebak-feedback').innerText = "Hebat! Sekarang cocokkan dengan memilih tombol pulau asal budaya tersebut.";
+            document.getElementById('tebak-feedback').className = "text-xs text-blue-700 font-semibold";
+            renderTebakLists();
+        }
+
+        function submitTebakMatch(islandId) {
+            if (selectedTebakCultureId === null) return;
+
+            const selectedItem = activeTebakItems[selectedTebakCultureId];
+            tebakAttempts++;
+
+            if (selectedItem.islandId === islandId) {
+                // Jawaban Benar!
+                selectedItem.matched = true;
+                matchedPairs++;
+                playSoundCorrect();
+                document.getElementById('tebak-score').innerText = matchedPairs;
+                document.getElementById('tebak-feedback').innerText = "BENAR! Kerja bagus, kamu berhasil memasangkannya dengan tepat! 🎉";
+                document.getElementById('tebak-feedback').className = "text-xs text-emerald-600 font-bold";
+            } else {
+                // Jawaban Salah
+                playSoundWrong();
+                document.getElementById('tebak-feedback').innerText = "Kurang tepat! Coba pelajari lagi di menu Jelajah Budaya dan coba lagi.";
+                document.getElementById('tebak-feedback').className = "text-xs text-red-600 font-bold animate-pulse";
+            }
+
+            selectedTebakCultureId = null; // reset pilihan
+            renderTebakLists();
+
+            // Selesai Semua Pasangan
+            if (matchedPairs === 5) {
+                setTimeout(() => {
+                    document.getElementById('tebak-feedback').innerText = `Luar biasa! Kamu berhasil menuntaskan semua tebakan budaya dengan gemilang! ✨`;
+                    document.getElementById('tebak-feedback').className = "text-sm text-blue-800 font-extrabold";
+                }, 500);
+            }
+        }
+
+        function resetTebakGame() {
+            playSoundClick();
+            initTebakGame();
+        }
+
+
+        // --- FITUR 3: KUIS JUARA ---
+        function initKuis() {
+            currentKuisIndex = 0;
+            kuisScore = 0;
+            currentSelectedAnswer = null;
+
+            document.getElementById('kuis-total').innerText = kuisQuestions.length;
+            document.getElementById('kuis-current-score').innerText = '0';
+
+            // Acak pertanyaan setiap kali kuis dimulai
+            kuisQuestions.sort(() => 0.5 - Math.random());
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            currentSelectedAnswer = null;
+            document.getElementById('next-question-btn').disabled = true;
+            document.getElementById('next-question-btn').className = "bg-slate-300 text-slate-500 cursor-not-allowed font-bold px-6 py-2 rounded-xl transition-all";
+
+            const qData = kuisQuestions[currentKuisIndex];
+            
+            // Render Info & Progress Bar
+            document.getElementById('kuis-index').innerText = currentKuisIndex + 1;
+            const progressPercent = ((currentKuisIndex + 1) / kuisQuestions.length) * 100;
+            document.getElementById('kuis-progress').style.width = `${progressPercent}%`;
+
+            // Render Teks Pertanyaan
+            document.getElementById('kuis-question').innerText = qData.q;
+
+            // Render Opsi Jawaban
+            const optionsContainer = document.getElementById('kuis-options');
+            optionsContainer.innerHTML = '';
+
+            qData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all hover:border-slate-300 text-sm md:text-base flex items-center gap-3";
+                
+                // Beri label alfabet (A, B, C, D)
+                const label = String.fromCharCode(65 + index); // A, B, C, D
+                btn.innerHTML = `<span class="bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs">${label}</span> <span class="flex-1">${opt}</span>`;
+                
+                btn.onclick = () => selectKuisAnswer(index);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectKuisAnswer(index) {
+            playSoundClick();
+            currentSelectedAnswer = index;
+
+            // Beri highlight pada jawaban yang dipilih
+            const optionsContainer = document.getElementById('kuis-options');
+            const buttons = optionsContainer.getElementsByTagName('button');
+
+            for (let i = 0; i < buttons.length; i++) {
+                const labelSpan = buttons[i].querySelector('span');
+                if (i === index) {
+                    buttons[i].className = "w-full text-left p-4 rounded-xl border-2 border-blue-500 bg-blue-50 text-blue-900 font-bold transition-all flex items-center gap-3";
+                    labelSpan.className = "bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs";
+                } else {
+                    buttons[i].className = "w-full text-left p-4 rounded-xl border-2 border-slate-200 bg-white hover:bg-slate-50 text-slate-700 font-semibold transition-all text-sm md:text-base flex items-center gap-3";
+                    labelSpan.className = "bg-blue-100 text-blue-800 w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs";
+                }
+            }
+
+            // Aktifkan tombol Lanjut
+            const nextBtn = document.getElementById('next-question-btn');
+            nextBtn.disabled = false;
+            nextBtn.className = "bg-blue-600 hover:bg-blue-700 text-white cursor-pointer font-bold px-6 py-2 rounded-xl transition-all shadow hover:shadow-md";
+        }
+
+        function nextQuestion() {
+            if (currentSelectedAnswer === null) return;
+
+            const qData = kuisQuestions[currentKuisIndex];
+            const isCorrect = currentSelectedAnswer === qData.answer;
+
+            // Evaluasi Skor
+            if (isCorrect) {
+                kuisScore += 10;
+                playSoundCorrect();
+                showOverlayFeedback(true);
+            } else {
+                playSoundWrong();
+                showOverlayFeedback(false, qData.options[qData.answer]);
+            }
+        }
+
+        // Tampilkan Umpan Balik Benar/Salah Sebelum Lanjut
+        function showOverlayFeedback(isCorrect, correctAnswerText = "") {
+            const overlay = document.createElement('div');
+            overlay.className = "fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4";
+            
+            let modalContent = "";
+            if (isCorrect) {
+                modalContent = `
+                    <div class="bg-white rounded-2xl p-6 text-center max-w-sm w-full border-4 border-emerald-500 shadow-2xl animate-bounce">
+                        <span class="text-6xl block mb-2">🌟</span>
+                        <h3 class="text-2xl font-black text-emerald-600">YAY, BENAR!</h3>
+                        <p class="text-slate-600 text-sm mt-2">Hebat sekali! Pengetahuanmu sungguh luar biasa.</p>
+                        <button id="close-feedback-btn" class="mt-5 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-2 rounded-xl transition-all shadow-md">
+                            Lanjut Berpetualang
+                        </button>
+                    </div>
+                `;
+            } else {
+                modalContent = `
+                    <div class="bg-white rounded-2xl p-6 text-center max-w-sm w-full border-4 border-red-500 shadow-2xl">
+                        <span class="text-6xl block mb-2">💡</span>
+                        <h3 class="text-2xl font-black text-red-600">KURANG TEPAT</h3>
+                        <p class="text-slate-600 text-sm mt-2">Jangan berkecil hati ya! Jawaban yang benar adalah:</p>
+                        <p class="bg-slate-100 text-slate-800 font-bold p-3 rounded-lg mt-2 border border-slate-200 text-sm">${correctAnswerText}</p>
+                        <button id="close-feedback-btn" class="mt-5 w-full bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 rounded-xl transition-all shadow-md">
+                            Coba Lagi di Pertanyaan Berikutnya
+                        </button>
+                    </div>
+                `;
+            }
+
+            overlay.innerHTML = modalContent;
+            document.body.appendChild(overlay);
+
+            // Fokus & Listener Lanjut Kuis
+            document.getElementById('close-feedback-btn').focus();
+            document.getElementById('close-feedback-btn').onclick = () => {
+                document.body.removeChild(overlay);
+                
+                // Perbarui tampilan skor di antarmuka
+                document.getElementById('kuis-current-score').innerText = kuisScore;
+
+                // Lanjut ke pertanyaan berikutnya
+                currentKuisIndex++;
+                if (currentKuisIndex < kuisQuestions.length) {
+                    loadQuestion();
+                } else {
+                    finishKuis();
+                }
+            };
+        }
+
+        function finishKuis() {
+            // Berpindah ke Tampilan Sertifikat Juara
+            switchView('sertifikat');
+
+            // Tanggal Hari Ini untuk Piagam
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('current-date').innerText = dateStr;
+
+            // Isikan nama & skor siswa
+            document.getElementById('cert-student-name').innerText = studentName;
+            document.getElementById('cert-score').innerText = `${kuisScore} Poin`;
+
+            // Atur predikat berdasarkan perolehan skor
+            let grade = "Kurang";
+            let gradeColor = "text-red-600";
+            if (kuisScore >= 80) {
+                grade = "Istimewa (Sangat Baik)";
+                gradeColor = "text-emerald-600";
+            } else if (kuisScore >= 60) {
+                grade = "Baik (Cukup Hebat)";
+                gradeColor = "text-blue-600";
+            } else {
+                grade = "Perlu Belajar Lagi";
+                gradeColor = "text-amber-600";
+            }
+
+            const gradeElement = document.getElementById('cert-grade');
+            gradeElement.innerText = grade;
+            gradeElement.className = `text-lg md:text-xl font-extrabold ${gradeColor}`;
+        }
+
+        // TAMPILKAN MENU SEBAGAI PEMBUKA DEFAULT SAAT HALAMAN SELESAI DI-LOAD
+        window.onload = function() {
+            switchView('menu');
+            
+            // Set default date saat load
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('current-date').innerText = dateStr;
+        };
+    </script>
+
+</body>
+</html>
